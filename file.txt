@@ -1,2 +1,6 @@
 neejianoniem;nbee;Zwolle;08/10/2022 19:16:22
 anoniem;hi;Utrecht;09/10/2022 20:45:09
+ja;hi;Zwolle;09/10/2022 21:34:35
+anoniem;nee;Zwolle;10/10/2022 09:10:21
+anoniem;nee;Zwolle;10/10/2022 09:10:47
+anoniem;ff;Utrecht;10/10/2022 09:23:34
