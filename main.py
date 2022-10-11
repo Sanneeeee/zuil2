@@ -18,9 +18,23 @@ def wegschrijven():
     outfile.write(naam + ';' + bericht + ';' + locatie + ';' + dateTime + '\n')
     print('Bedankt voor je beoordeling!')
 
+def stationsScherm(regel, schermlijst):
+
+    while len(schermLijst) < 5:
+        schermLijst.append(regel)
+
+    schermlijst.pop(0)
+    schermLijst.append(regel)
+    return schermlijst
+
+
+    #delete laatste en voeg een nieuwe toe
+
+
 def moderatie():
     outfile = open('file.txt', 'r')
     regels = outfile.readlines()
+    schermLijst = []
     for regel in regels:
         berichtInfo = regel.split(';')
         print(berichtInfo)
@@ -33,14 +47,22 @@ def moderatie():
         print(naam)
         beoordeling = input('typ goed voor goedkeuring fout voor afkeuring: ')
 
+
         if beoordeling == 'goed':
-            print('.')#moet worden door geschreven naar db
+            print('.')
+            # moet worden door geschreven naar db
             # mag worden weergegeven op stations bord
+
+
+            schermLijst = stationsScherm(regel, schermLijst)
+            print(stationsScherm())
         elif beoordeling == 'fout':
-            print('@') #moet worden door geschreven naar db
+            print('@')
+            #moet worden door geschreven naar db
              # mag niet worden weergegeven op stations bord
         else:
-            print('deze waarde kunnen we niet aan nemen')
+            print('deze waarde kunnen we niet herkennen.')
+
 
 
 loop = True
