@@ -32,7 +32,13 @@ def wegschrijven(bericht):
 
     outfile = open('file.txt', 'a')
     outfile.write(naam + ';' + bericht + ';' + locatie + ';' + dateTime + '\n')
-    print('Bedankt voor je beoordeling!')
+    #print('Bedankt voor je beoordeling!')
+    bedanktbericht = Label(master=root,
+                      text='Bedankt voor je beoordeling!',
+                      background='darkblue',
+                      foreground='yellow',
+                      font=('Ariel', 22, 'bold italic'))
+    bedanktbericht.pack()
 
 def onclick():
     loop = True
