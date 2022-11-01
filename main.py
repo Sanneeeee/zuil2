@@ -9,7 +9,15 @@ def wegschrijven(bericht):
     """
     :return:
     """
-    naam = naamtext.get("1.0", END)
+    naamNewLine = naamtext.get("1.0", END)
+
+    naamlst=naamNewLine.split('\n')    #haalt de \n erachter weg
+    naam = naamlst[0]
+    berichtlst=bericht.split('\n')
+    bericht = berichtlst[0]
+    # lst=[naam,bericht]
+    # print(lst)
+
 
     if naam == '' or naam == '.' or naam == ' ':
         naam = 'anoniem'
@@ -90,14 +98,14 @@ def moderatie():
         else:
             print('deze waarde kunnen we niet herkennen.')
 
-
+#api ofz
 #x = requests.get('https://www.omdbapi.com/?i=tt3896198&apikey=1d9ee833&t=witness&y=2021')
 
 #print(json.loads(x.text)['Title'])
 
 #connection_string = "host='localhost' dbname='ZUIL' user='postgres' password='Ez7kaieb'"
 #conn = psycopg2.connect(connection_string)  # get a connection with the database
-#cursor = conn.cursor()
+#cursor = conn.cursor()%
 
 root = Tk()
 root.title('Beoordeelprogrammatje')
