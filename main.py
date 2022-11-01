@@ -53,7 +53,14 @@ def onclick():
             wegschrijven(bericht)
             loop = False
         else:
-            print('Dit bericht is te lang of heeft een ; probeer het opnieuw')
+            #print('Dit bericht is te lang of heeft een ; probeer het opnieuw')
+            foutbericht = Label(master=root,
+                                   text='Dit bericht is te lang of heeft een ; probeer het opnieuw',
+                                   background='darkblue',
+                                   foreground='yellow',
+                                   font=('Ariel', 22, 'bold italic'))
+            foutbericht.pack()
+            loop = False
 
 
 
