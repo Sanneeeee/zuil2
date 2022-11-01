@@ -1,6 +1,16 @@
 import random
-from datetime import datetime  #voor het krijgen van de datum en tijd
+import requests
+import json
+import psycopg2
+from datetime import datetime#voor het krijgen van de datum en tijd
+from tkinter import *
+
+
+
 def wegschrijven():
+    """
+    :return:
+    """
     naam = input('Vul je naam in:')
 
     if naam == '' or naam == '.' or naam == ' ':
@@ -19,11 +29,16 @@ def wegschrijven():
     print('Bedankt voor je beoordeling!')
 
 def stationsScherm(regel, schermlijst):
+    """
 
+    :param regel:
+    :param schermlijst:
+    :return:
+    """
     while len(schermLijst) < 5:
         schermLijst.append(regel)
 
-    schermlijst.pop(0)
+    schermlist.pop(0)
     schermLijst.append(regel)
     return schermlijst
 
@@ -52,30 +67,84 @@ def moderatie():
             print('.')
             # moet worden door geschreven naar db
             # mag worden weergegeven op stations bord
-
-
             schermLijst = stationsScherm(regel, schermLijst)
             print(stationsScherm())
         elif beoordeling == 'fout':
             print('@')
-            #moet worden door geschreven naar db
-             # mag niet worden weergegeven op stations bord
+
         else:
             print('deze waarde kunnen we niet herkennen.')
 
 
+#x = requests.get('https://www.omdbapi.com/?i=tt3896198&apikey=1d9ee833&t=witness&y=2021')
+
+#print(json.loads(x.text)['Title'])
+
+#connection_string = "host='localhost' dbname='ZUIL' user='postgres' password='Ez7kaieb'"
+#conn = psycopg2.connect(connection_string)  # get a connection with the database
+#cursor = conn.cursor()
+
+root = Tk()
+root.title('Beoordeelprogrammatje')
+root.geometry("800x400")
+root.configure(bg='darkblue')
+p1 = PhotoImage(file='NSicon.png')
+root.iconphoto(False, p1)
+
+label = Label(master=root,
+              text='Laat hier je beoordeling achter!',
+              background='darkblue',
+              foreground='yellow',
+              font=('Ariel', 25, 'bold italic'),
+              pady=20)
+label.pack()
+
+beoordelingLabel = Label(master=root,
+                         text='Vul hier je beoordeling in*',
+                         background='darkblue',
+                         foreground='white',
+                         font=('Ariel', 12, 'bold italic'))
+beoordelingLabel.pack()
+
+
+
+beoordeling = Text(root, width=80, height=8,background='lightyellow')
+#print(a.get("1.0", END))
+beoordeling.pack()
+
+labelNaam = Label(master=root,
+              text='Vul hier je naam in',
+              background='darkblue',
+              foreground='white',
+              font=('Ariel', 12, 'bold italic'))
+labelNaam.pack()
+
+naam = Text(root, width=40, height=1,background='lightyellow')
+#print(a.get("1.0", END))
+naam.pack()
+
+button = Button(master=root,text='Klaar',background='Yellow')#, command = opclick)
+button.pack(pady=(20,10))
+
+
+root.mainloop()
+
 
 loop = True
 while loop == True:
-    moderatie()
-    print('Je bericht mag net langer zijn dan 140 karakters!')
+    #moderatie()
+    print('Je bericht mag niet langer zijn dan 140 karakters!')
     bericht = input('Geef ons je mening:')
 
-    if len(bericht) <= 140:
+    if len(bericht) <= 140 or ';' in bericht:
         wegschrijven()
         loop = False
     else:
-        print('Dit bericht is te lang probeer het opnieuw')
+        print('Dit bericht is te lang of heeft een ; probeer het opnieuw')
+
+
+
+
 
 
 
