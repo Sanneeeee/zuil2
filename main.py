@@ -5,13 +5,11 @@ import psycopg2
 from datetime import datetime#voor het krijgen van de datum en tijd
 from tkinter import *
 
-
-
-def wegschrijven():
+def wegschrijven(bericht):
     """
     :return:
     """
-    naam = input('Vul je naam in:')
+    naam = naamtext.get("1.0", END)
 
     if naam == '' or naam == '.' or naam == ' ':
         naam = 'anoniem'
@@ -27,6 +25,23 @@ def wegschrijven():
     outfile = open('file.txt', 'a')
     outfile.write(naam + ';' + bericht + ';' + locatie + ';' + dateTime + '\n')
     print('Bedankt voor je beoordeling!')
+
+def onclick():
+    loop = True
+    while loop == True:
+         #moderatie()
+        # print('Je bericht mag niet langer zijn dan 140 karakters!')
+        # bericht = input('Geef ons je mening:')
+
+        bericht = beoordeling.get("1.0", END)
+
+        if len(bericht) <= 140 or ';' in bericht:
+            wegschrijven(bericht)
+            loop = False
+        else:
+            print('Dit bericht is te lang of heeft een ; probeer het opnieuw')
+
+
 
 def stationsScherm(regel, schermlijst):
     """
@@ -108,7 +123,7 @@ beoordelingLabel.pack()
 
 
 
-beoordeling = Text(root, width=80, height=8,background='lightyellow')
+beoordeling = Text(root, width=50, height=4,background='lightyellow',font=('Ariel', 12, 'bold italic'))
 #print(a.get("1.0", END))
 beoordeling.pack()
 
@@ -119,28 +134,16 @@ labelNaam = Label(master=root,
               font=('Ariel', 12, 'bold italic'))
 labelNaam.pack()
 
-naam = Text(root, width=40, height=1,background='lightyellow')
+naamtext = Text(root, width=40, height=1,background='lightyellow')
 #print(a.get("1.0", END))
-naam.pack()
+naamtext.pack()
 
-button = Button(master=root,text='Klaar',background='Yellow')#, command = opclick)
+button = Button(master=root,text='Klaar',background='Yellow', command = onclick)
 button.pack(pady=(20,10))
 
 
 root.mainloop()
 
-
-loop = True
-while loop == True:
-    #moderatie()
-    print('Je bericht mag niet langer zijn dan 140 karakters!')
-    bericht = input('Geef ons je mening:')
-
-    if len(bericht) <= 140 or ';' in bericht:
-        wegschrijven()
-        loop = False
-    else:
-        print('Dit bericht is te lang of heeft een ; probeer het opnieuw')
 
 
 
