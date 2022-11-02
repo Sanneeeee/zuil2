@@ -49,67 +49,73 @@ def onclick():
 
         bericht = beoordeling.get("1.0", END)
 
-        if len(bericht) <= 140 or ';' in bericht:
-            wegschrijven(bericht)
-            loop = False
-        else:
-            #print('Dit bericht is te lang of heeft een ; probeer het opnieuw')
+        if len(bericht) > 140 or ';' in bericht:
+            # print('Dit bericht is te lang of heeft een ; probeer het opnieuw')
             foutbericht = Label(master=root,
-                                   text='Dit bericht is te lang of heeft een ; probeer het opnieuw',
-                                   background='darkblue',
-                                   foreground='yellow',
-                                   font=('Ariel', 22, 'bold italic'))
+                                text='Dit bericht is te lang of heeft een ; probeer het opnieuw',
+                                background='darkblue',
+                                foreground='yellow',
+                                font=('Ariel', 22, 'bold italic'))
             foutbericht.pack()
             loop = False
+        else:
+            wegschrijven(bericht)
+            loop = False
 
+def schrijvenDB(moderaterID,naam,bericht,locatie,datumTijd,dateTimeBeoordeling):
 
+    connection_string = "host='localhost' dbname='ZUIL' user='postgres' password='Ez7kaieb'"
+    conn = psycopg2.connect(connection_string)
+    cursor = conn.cursor()
+    insert = """INSERT INTO beoordeling(Naam,Bericht,tijddatum,tijddatumkeuring,moderaterid,stationsnaam,beoordelingid)
+                VALUES(%s,%s,%s,%s,%s,%s,DEFAULT)"""
 
-def stationsScherm(regel, schermlijst):
-    """
-
-    :param regel:
-    :param schermlijst:
-    :return:
-    """
-    while len(schermLijst) < 5:
-        schermLijst.append(regel)
-
-    schermlist.pop(0)
-    schermLijst.append(regel)
-    return schermlijst
-
-
-    #delete laatste en voeg een nieuwe toe
-
+    data = (naam, bericht, datumTijd, dateTimeBeoordeling, moderaterID, locatie)
+    cursor.execute(insert, data)
+    #records = cursor.fetchall()
+    conn.commit()
+    conn.close()
 
 def moderatie():
+    moderater = input('voer eerst je moderaterID in:')
+    moderaterID = int(moderater)
+
     outfile = open('file.txt', 'r')
     regels = outfile.readlines()
-    schermLijst = []
+
     for regel in regels:
         berichtInfo = regel.split(';')
         print(berichtInfo)
         naam = berichtInfo[0]
         bericht = berichtInfo[1]
-        #locatie = berichtInfo[2]
-        #datumTijd = berichtInfo[3].strip('\n')
+        locatie = berichtInfo[2]
+        datumTijd = berichtInfo[3].strip('\n')
+
+        now = datetime.now()
+        dateTimeBeoordeling = now.strftime("%d/%m/%Y %H:%M:%S")
 
         print(bericht)
         print(naam)
-        beoordeling = input('typ goed voor goedkeuring fout voor afkeuring: ')
+        beoordeling = input('typ g voor goedkeuring f voor afkeuring: ')
 
 
-        if beoordeling == 'goed':
+        if beoordeling == 'g' or beoordeling == '':
             print('.')
             # moet worden door geschreven naar db
             # mag worden weergegeven op stations bord
-            schermLijst = stationsScherm(regel, schermLijst)
-            print(stationsScherm())
-        elif beoordeling == 'fout':
+            schrijvenDB(moderaterID,naam,bericht,locatie,datumTijd,dateTimeBeoordeling)
+
+        elif beoordeling == 'f':
             print('@')
 
         else:
             print('deze waarde kunnen we niet herkennen.')
+
+    outfile.close()
+
+
+    outfile = open('file.txt', 'w')
+    outfile.close()
 
 #api ofz
 #x = requests.get('https://www.omdbapi.com/?i=tt3896198&apikey=1d9ee833&t=witness&y=2021')
@@ -119,6 +125,8 @@ def moderatie():
 #connection_string = "host='localhost' dbname='ZUIL' user='postgres' password='Ez7kaieb'"
 #conn = psycopg2.connect(connection_string)  # get a connection with the database
 #cursor = conn.cursor()%
+
+moderatie()
 
 root = Tk()
 root.title('Beoordeelprogrammatje')
