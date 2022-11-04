@@ -98,7 +98,7 @@ labelNaam = Label(master=root,
               font=('Ariel', 12, 'bold italic'))
 labelNaam.pack()
 
-naamtext = Text(root, width=40, height=1,background='lightyellow')
+naamtext = Text(root, width=40, height=1,background='lightyellow',font=('Ariel', 12, 'bold italic'))
 #print(a.get("1.0", END))
 naamtext.pack()
 
