@@ -1,3 +1,6 @@
+from datetime import datetime#voor het krijgen van de datum en tijd
+import psycopg2
+
 def schrijvenDB(moderaterID,naam,bericht,locatie,datumTijd,dateTimeBeoordeling):
 
     connection_string = "host='localhost' dbname='ZUIL' user='postgres' password='Ez7kaieb'"
