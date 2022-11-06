@@ -26,7 +26,7 @@ def wegschrijven(bericht):
     dateTime = now.strftime("%d/%m/%Y %H:%M:%S")
     #print(dateTime)
 
-    randomLocatie = ['Utrecht', 'Assen', 'Zwolle']
+    randomLocatie = ['Utrecht', 'Assen', 'Zwolle', 'Groningen']
     locatie = random.choice(randomLocatie)
     #print(locatie)
 

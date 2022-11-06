@@ -15,7 +15,7 @@ def stationscherm(stationnaam,lat,lon):
     omschrijving = json.loads(Weer.text)['weather']
     temp = json.loads(Weer.text)['main']
     print(omschrijving[0]['description'])
-    print(temp['temp'],'Celcius')
+    print(temp['temp'],'C')
 
     root = Tk()
     root.title('Stationsschermpje')
@@ -31,8 +31,35 @@ def stationscherm(stationnaam,lat,lon):
               font=('Ariel', 40, 'bold italic'))
     label.grid(row=0, column = 0, padx=10, pady=10)
 
+    image = Image.open("NS-white.png")
+    resize_image = image.resize((150, 64))
+
+    img = ImageTk.PhotoImage(resize_image)
+    label = Label(image=img,
+                  background='darkblue')
+    label.image = img  # keep a reference!
+    label.grid(sticky="W", row=0, column=1)
+
+    label = Label(master=root,
+                  text=f'{omschrijving[0]["description"]}\n{round(temp["temp"])} °C',
+                  background='darkblue',
+                  foreground='white',
+                  font=('Ariel', 25, 'bold italic'))
+    label.grid(sticky="W", row=0, column=2)
+
+
+    img = ImageTk.PhotoImage(resize_image)
+    label = Label(image=img,
+                  background='darkblue')
+    label.image = img  # keep a reference!
+    label.grid(sticky="E", row=0, column=1)
+
+
+
+
+
     i=0
-    for m in ('Naam', 'Bericht', '  Datum & Tijd  ', 'Station', 'Facaliteiten'):
+    for m in ('Naam', 'Bericht', '  Datum & Tijd  ', 'Station'):
 
         label = Label(master=root,
                     text=m,
@@ -43,33 +70,14 @@ def stationscherm(stationnaam,lat,lon):
         label.grid(row=1, column=i, padx=0, pady=10)
         i+=1
 
-    # label = Label(master=root,
-    #               text='bericht',
-    #               background='darkblue',
-    #               foreground='yellow',
-    #               font=('Ariel', 18, 'bold italic'))
-    # label.grid(row=1, column=1, padx=10, pady=10)
-    #
-    # label = Label(master=root,
-    #               text='tijd',
-    #               background='darkblue',
-    #               foreground='yellow',
-    #               font=('Ariel', 18, 'bold italic'))
-    # label.grid(row=1, column=2, padx=10, pady=10)
-    #
-    # label = Label(master=root,
-    #               text='station',
-    #               background='darkblue',
-    #               foreground='yellow',
-    #               font=('Ariel', 18, 'bold italic'))
-    # label.grid(row=1, column=3, padx=10, pady=10)
-    #
-    # label = Label(master=root,
-    #               text='facaliteiten',
-    #               background='darkblue',
-    #               foreground='yellow',
-    #               font=('Ariel', 18, 'bold italic'))
-    # label.grid(row=1, column=4, padx=10, pady=10)
+    label = Label(master=root,
+                  text='Facaliteiten',
+                  background='lightblue',
+                  foreground='black',
+                  font=('Ariel', 23, 'bold italic'),
+                  width=12)
+    label.grid(row=1, column=4, columnspan=4, padx=0, pady=10)
+
 
     connection_string = "host='localhost' dbname='ZUIL' user='postgres' password='Ez7kaieb'"
     conn = psycopg2.connect(connection_string)  # get a connection with the database
@@ -84,45 +92,39 @@ def stationscherm(stationnaam,lat,lon):
     n = 2
     for record in records:
         print(record)
-
+        print(len(record[1]))
+        p = 0
         c = 0
         for item in record:
             if item == record[4] or item == record[5] or item == record[6] or item == record[7]:
-                print('ja')
-                # label = Label(master=root,
-                #               text=f'{record[4]} {record[5]} {record[6]} {record[7]}',
-                #               background='darkblue',
-                #               foreground='yellow',
-                #               font=('Ariel', 18, 'bold italic'))
-                # label.grid(row=n, column=4, padx=0, pady=10)
+                p+=1
 
-                if record[4] == True:
-                    image = Image.open("img_ovfiets.png")
+                if item == True and p == 1:
+                    faciliteit = 'ovfiets'
+                    c += 1
+                elif item == True and p == 2:
+                    faciliteit = 'lift'
+                    c += 1
+                elif item == True and p == 3:
+                    print(3)
+                    faciliteit = 'toilet'
+                    c += 1
+                elif item == True and p == 4:
+                    print(4)
+                    faciliteit = 'pr'
+                    c+=1
 
+                if faciliteit != '':
+                    image = Image.open(f"img_{faciliteit}.png")
                     resize_image = image.resize((75, 64))
 
                     img = ImageTk.PhotoImage(resize_image)
                     label = Label(image=img)
                     label.image = img  # keep a reference!
-                    label.grid(row=n, column=4, pady = 5)
-                elif record[5] == True:
-                    image = Image.open("img_lift.png")
-                    photo = ImageTk.PhotoImage(image)
-                    label = Label(image=photo)
-                    label.image = photo  # keep a reference!
-                    label.grid(row=n, column=4)
-                elif record[6] == True:
-                    image = Image.open("img_toilet.png")
-                    photo = ImageTk.PhotoImage(image)
-                    label = Label(image=photo)
-                    label.image = photo  # keep a reference!
-                    label.grid(row=n, column=4)
-                else:
-                    image = Image.open("img_pr.png")
-                    photo = ImageTk.PhotoImage(image)
-                    label = Label(image=photo)
-                    label.image = photo  # keep a reference!
-                    label.grid(row=n, column=4)
+                    label.grid(row=n, column=c, pady=5, padx=10)
+                    faciliteit = ''
+                # c += 1
+
 
 
             else:
@@ -133,6 +135,7 @@ def stationscherm(stationnaam,lat,lon):
                             font=('Ariel', 18, 'bold italic'))
                 label.grid(row=n, column=c, padx=0, pady=10)
                 c+=1
+
         n+=1
 
 
