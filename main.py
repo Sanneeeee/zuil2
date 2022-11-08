@@ -8,6 +8,8 @@ from tkinter import *
 
 def wegschrijven(bericht):
     """
+    checkt de naam en voegt alles(naam, bericht, datum, tijd en locatie) samen om dit naar txt file te sturen.
+    :param bericht: het bericht van de reiziger heeft achtergelaten
     :return:
     """
     naamNewLine = naamtext.get("1.0", END)
@@ -20,50 +22,50 @@ def wegschrijven(bericht):
     # print(lst)
 
 
-    if naam == '' or naam == '.' or naam == ' ':
+    if naam == '' or naam == '.' or naam == ' ':  # als naam niet is ingevuld word naam 'anoniem'
         naam = 'anoniem'
 
-    now = datetime.now()
+    now = datetime.now()          #tijd van het bericht
     dateTime = now.strftime("%d/%m/%Y %H:%M:%S")
-    #print(dateTime)
 
-    randomLocatie = ['Utrecht', 'Assen', 'Zwolle', 'Groningen']
+
+    randomLocatie = ['Utrecht', 'Assen', 'Zwolle', 'Groningen']  # bepaling van de locatie
     locatie = random.choice(randomLocatie)
-    #print(locatie)
 
-    outfile = open('file.txt', 'a')
+
+    outfile = open('file.txt', 'a')    # naar txt file schrijven
     outfile.write(naam + ';' + bericht + ';' + locatie + ';' + dateTime + '\n')
-    #print('Bedankt voor je beoordeling!')
 
 
 
 def onclick():
+    """
+    word aangeroepen waanner er op de knop in gui word geklikt
+    in een while loop zodat er op nieuw geprobeert kan worden wanneer het te lang is of ; in bericht
+
+    """
     loop = True
     while loop == True:
-         #moderatie()
-        # print('Je bericht mag niet langer zijn dan 140 karakters!')
-        # bericht = input('Geef ons je mening:')
+        bericht = beoordeling.get("1.0", END)   # haalt het bericht uit gui
 
-        bericht = beoordeling.get("1.0", END)
+        if len(bericht) > 140 or ';' in bericht:  # checkt het bericht
 
-        if len(bericht) > 140 or ';' in bericht:
-            # print('Dit bericht is te lang of heeft een ; probeer het opnieuw')
-            foutbericht = Label(master=root,
+            foutbericht = Label(master=root,   # wanneer bericht niet goed is
                                 text='Dit bericht is te lang of heeft een ; probeer het opnieuw',
                                 background='darkblue',
                                 foreground='yellow',
                                 font=('Ariel', 22, 'bold italic'))
             foutbericht.pack()
             loop = False
-        else:
+        else:   # bericht is goed dus word deze weg geschreven
             wegschrijven(bericht)
             loop = False
-            beoordeling.delete('1.0','end')
+            beoordeling.delete('1.0','end') #leegt de text vakken voor de volgende reiziger
             naamtext.delete('1.0','end')
 
 
 
-root = Tk()
+root = Tk()           #gui
 root.title('Beoordeelprogrammatje')
 root.geometry("800x400")
 root.configure(bg='darkblue')
@@ -86,7 +88,6 @@ beoordelingLabel = Label(master=root,
 beoordelingLabel.pack()
 
 beoordeling = Text(root, width=50, height=4, background='lightyellow', font=('Ariel', 12, 'bold italic'))
-    # print(a.get("1.0", END))
 beoordeling.pack()
 
 labelNaam = Label(master=root,
@@ -97,7 +98,6 @@ labelNaam = Label(master=root,
 labelNaam.pack()
 
 naamtext = Text(root, width=40, height=1, background='lightyellow', font=('Ariel', 12, 'bold italic'))
-    # print(a.get("1.0", END))
 naamtext.pack()
 
 button = Button(master=root, text='Klaar', background='Yellow', command=onclick)
