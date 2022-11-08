@@ -4,6 +4,7 @@ import json
 import psycopg2
 
 from PIL import Image, ImageTk
+from urllib.request import urlopen
 
 #def beoordelingen():
 
@@ -31,14 +32,22 @@ def stationscherm(stationnaam,lat,lon):
               font=('Ariel', 40, 'bold italic'))
     label.grid(row=0, column = 0, padx=10, pady=10)
 
-    image = Image.open("NS-white.png")
-    resize_image = image.resize((150, 64))
+    icon = f'https://openweathermap.org/img/wn/{omschrijving[0]["icon"]}@2x.png'
+    u = urlopen(icon)
+    raw_data = u.read()
+    u.close()
 
-    img = ImageTk.PhotoImage(resize_image)
-    label = Label(image=img,
+    photo = ImageTk.PhotoImage(data=raw_data)  # <-----
+
+
+
+    #resize_image = photo.resize((150, 64))
+
+    #img = ImageTk.PhotoImage(resize_image)
+    label = Label(image=photo,
                   background='darkblue')
-    label.image = img  # keep a reference!
-    label.grid(sticky="W", row=0, column=1)
+    #label.image = img  # keep a reference!
+    label.grid(sticky="E", row=0, column=1)
 
     label = Label(master=root,
                   text=f'{omschrijving[0]["description"]}\n{round(temp["temp"])} °C',
@@ -47,12 +56,19 @@ def stationscherm(stationnaam,lat,lon):
                   font=('Ariel', 25, 'bold italic'))
     label.grid(sticky="W", row=0, column=2)
 
-
+    image = Image.open("NS-white.png")
+    resize_image = image.resize((150, 64))
     img = ImageTk.PhotoImage(resize_image)
     label = Label(image=img,
-                  background='darkblue')
+                   background='darkblue')
     label.image = img  # keep a reference!
-    label.grid(sticky="E", row=0, column=1)
+    label.grid(sticky="W", row=0, column=1)
+
+
+    # img = ImageTk.PhotoImage(resize_image)
+    # label = Label(image=img)
+    # label.image = img  # keep a reference!
+    # label.grid(row=n, column=c, pady=5, padx=5)
 
 
 
@@ -67,7 +83,7 @@ def stationscherm(stationnaam,lat,lon):
                     foreground='black',
                     font=('Ariel', 23, 'bold italic'),
                     width = 12)
-        label.grid(row=1, column=i, padx=0, pady=10)
+        label.grid(row=1, column=i, padx=0, pady=10, sticky='WE')
         i+=1
 
     label = Label(master=root,
@@ -76,7 +92,7 @@ def stationscherm(stationnaam,lat,lon):
                   foreground='black',
                   font=('Ariel', 23, 'bold italic'),
                   width=12)
-    label.grid(row=1, column=4, columnspan=4, padx=0, pady=10)
+    label.grid(row=1, column=4, columnspan=4, padx=0, pady=10, sticky ='WE')
 
 
     connection_string = "host='localhost' dbname='ZUIL' user='postgres' password='Ez7kaieb'"
@@ -121,7 +137,7 @@ def stationscherm(stationnaam,lat,lon):
                     img = ImageTk.PhotoImage(resize_image)
                     label = Label(image=img)
                     label.image = img  # keep a reference!
-                    label.grid(row=n, column=c, pady=5, padx=10)
+                    label.grid(row=n, column=c, pady=5, padx=5)
                     faciliteit = ''
                 # c += 1
 
@@ -132,7 +148,9 @@ def stationscherm(stationnaam,lat,lon):
                             text=f'{item}',
                             background='darkblue',
                             foreground='yellow',
-                            font=('Ariel', 18, 'bold italic'))
+                            font=('Ariel', 18, 'bold italic'),
+                            width=0,
+                            wraplength=500)
                 label.grid(row=n, column=c, padx=0, pady=10)
                 c+=1
 
