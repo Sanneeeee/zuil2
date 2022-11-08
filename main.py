@@ -5,6 +5,7 @@ import psycopg2
 from datetime import datetime#voor het krijgen van de datum en tijd
 from tkinter import *
 
+
 def wegschrijven(bericht):
     """
     :return:
@@ -33,12 +34,8 @@ def wegschrijven(bericht):
     outfile = open('file.txt', 'a')
     outfile.write(naam + ';' + bericht + ';' + locatie + ';' + dateTime + '\n')
     #print('Bedankt voor je beoordeling!')
-    bedanktbericht = Label(master=root,
-                      text='Bedankt voor je beoordeling!',
-                      background='darkblue',
-                      foreground='yellow',
-                      font=('Ariel', 22, 'bold italic'))
-    bedanktbericht.pack()
+
+
 
 def onclick():
     loop = True
@@ -61,6 +58,9 @@ def onclick():
         else:
             wegschrijven(bericht)
             loop = False
+            beoordeling.delete('1.0','end')
+            naamtext.delete('1.0','end')
+
 
 
 root = Tk()
@@ -71,42 +71,41 @@ p1 = PhotoImage(file='NSicon.png')
 root.iconphoto(False, p1)
 
 label = Label(master=root,
-              text='Laat hier je beoordeling achter!',
-              background='darkblue',
-              foreground='yellow',
-              font=('Ariel', 25, 'bold italic'),
-              pady=20)
+                text='Laat hier je beoordeling achter!',
+                background='darkblue',
+                foreground='yellow',
+                font=('Ariel', 25, 'bold italic'),
+                pady=20)
 label.pack()
 
 beoordelingLabel = Label(master=root,
-                         text='Vul hier je beoordeling in*',
-                         background='darkblue',
-                         foreground='white',
-                         font=('Ariel', 12, 'bold italic'))
+                             text='Vul hier je beoordeling in*',
+                             background='darkblue',
+                             foreground='white',
+                             font=('Ariel', 12, 'bold italic'))
 beoordelingLabel.pack()
 
-
-
-beoordeling = Text(root, width=50, height=4,background='lightyellow',font=('Ariel', 12, 'bold italic'))
-#print(a.get("1.0", END))
+beoordeling = Text(root, width=50, height=4, background='lightyellow', font=('Ariel', 12, 'bold italic'))
+    # print(a.get("1.0", END))
 beoordeling.pack()
 
 labelNaam = Label(master=root,
-              text='Vul hier je naam in',
-              background='darkblue',
-              foreground='white',
-              font=('Ariel', 12, 'bold italic'))
+                  text='Vul hier je naam in',
+                    background='darkblue',
+                    foreground='white',
+                    font=('Ariel', 12, 'bold italic'))
 labelNaam.pack()
 
-naamtext = Text(root, width=40, height=1,background='lightyellow',font=('Ariel', 12, 'bold italic'))
-#print(a.get("1.0", END))
+naamtext = Text(root, width=40, height=1, background='lightyellow', font=('Ariel', 12, 'bold italic'))
+    # print(a.get("1.0", END))
 naamtext.pack()
 
-button = Button(master=root,text='Klaar',background='Yellow', command = onclick)
-button.pack(pady=(20,10))
-
+button = Button(master=root, text='Klaar', background='Yellow', command=onclick)
+button.pack(pady=(20, 10))
 
 root.mainloop()
+
+
 
 
 
