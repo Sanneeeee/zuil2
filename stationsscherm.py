@@ -2,7 +2,6 @@ from tkinter import *
 import requests
 import json
 import psycopg2
-
 from PIL import Image, ImageTk
 from urllib.request import urlopen
 
@@ -40,7 +39,7 @@ def stationscherm(stationnaam,lat,lon):
     raw_data = u.read()
     u.close()
 
-    photo = ImageTk.PhotoImage(data=raw_data)  # <-----
+    photo = ImageTk.PhotoImage(data=raw_data)
 
     label = Label(image=photo,  # het weer icon
                   background='darkblue')
